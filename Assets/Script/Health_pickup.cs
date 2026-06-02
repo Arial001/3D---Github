@@ -6,7 +6,6 @@ public class ItemBehavior : MonoBehaviour
 
     void Start()
     {
-        // Tambahkan Ini (3.4) - Cari Game Manager otomatis
         GameManager = GameObject.Find("Game Manager").GetComponent<GameBehavior>();
     }
 

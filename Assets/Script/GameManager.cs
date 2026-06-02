@@ -5,12 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameBehavior : MonoBehaviour
 {
-    // Variables untuk menyimpan data game
     private int _itemsCollected = 0;
     private int _playerHP = 10;
     public int MaxItems = 3;
-
-    // Referensi UI
     public TMP_Text HealthText;
     public TMP_Text ItemText;
     public TMP_Text ProgressText;
@@ -18,16 +15,13 @@ public class GameBehavior : MonoBehaviour
 
     void Start()
     {
-        // Initialize UI display
         ItemText.text = "Items: " + _itemsCollected;
         HealthText.text = "Health: " + _playerHP;
 
-        // Sembunyikan win button di awal
         if (WinButton != null)
             WinButton.gameObject.SetActive(false);
     }
 
-    // Property untuk Items dengan getter/setter
     public int Items
     {
         get { return _itemsCollected; }
@@ -36,13 +30,12 @@ public class GameBehavior : MonoBehaviour
             _itemsCollected = value;
             ItemText.text = "Items: " + _itemsCollected;
 
-            // Cek apakah semua item sudah terkumpul
             if (_itemsCollected >= MaxItems)
             {
                 ProgressText.text = "You've found all the items!";
                 if (WinButton != null)
                     WinButton.gameObject.SetActive(true);
-                Time.timeScale = 0f; // Pause game
+                Time.timeScale = 0f;
             }
             else
             {
@@ -52,7 +45,6 @@ public class GameBehavior : MonoBehaviour
         }
     }
 
-    // Property untuk HP dengan getter/setter
     public int HP
     {
         get { return _playerHP; }
@@ -64,7 +56,6 @@ public class GameBehavior : MonoBehaviour
         }
     }
 
-    // Method untuk restart scene
     public void RestartScene()
     {
         SceneManager.LoadScene(0);

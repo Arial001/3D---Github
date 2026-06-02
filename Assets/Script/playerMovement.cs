@@ -9,6 +9,10 @@ public class PlayerBehavior : MonoBehaviour
     private float _vInput;
     private float _hInput;
     private bool _isJumping;
+
+    public bool IsOnGround = true;
+    public float GroundCheckRadius = 0.3f;
+    public LayerMask GroundLayer;
     private Rigidbody _rb;
     public GameObject Bullet;
     public float BulletSpeed = 100f;
@@ -24,18 +28,22 @@ public class PlayerBehavior : MonoBehaviour
         _hInput = Input.GetAxis("Horizontal") * RotateSpeed;
         _isJumping |= Input.GetKeyDown(KeyCode.Space);
         _isShooting |= Input.GetKeyDown(KeyCode.J);
+
+        IsOnGround = Physics.CheckSphere(transform.position, GroundCheckRadius, GroundLayer);
+        
+        if(Input.GetKeyDown(KeyCode.J) && IsOnGround)
+        {
+            _isJumping = true;
+        }
     }
     
     void FixedUpdate()
     {
-        // Gerak maju mundur
         _rb.MovePosition(transform.position + transform.forward * _vInput * Time.fixedDeltaTime);
         
-        // Rotasi kiri kanan
         Quaternion angleRot = Quaternion.Euler(Vector3.up * _hInput * Time.fixedDeltaTime);
         _rb.MoveRotation(_rb.rotation * angleRot);
         
-        // Lompat
         if (_isJumping)
         {
             _rb.AddForce(Vector3.up * JumpVelocity, ForceMode.Impulse);
@@ -50,5 +58,10 @@ public class PlayerBehavior : MonoBehaviour
             bulletRB.linearVelocity = this.transform.forward * BulletSpeed;
             _isShooting = false;
         }
+    }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, GroundCheckRadius);
     }
 }
